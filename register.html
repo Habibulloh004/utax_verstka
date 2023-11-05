@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#643488',
+              primary2: '#653e834f',
+              bgPrimary: '#C1AECF66',
+              secondary: '#47019d',
+              white1: '#fff',
+              black1: '#000',
+              colorFoot: '#EAEAEA',
+              gray1: '#cecece',
+              red1: '#DB2929',
+              green1: '#00A907',
+              blue1: '#2D2AD6',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" href="assets/img/logo.png" />
+    <title>Utax</title>
+  </head>
+  <body>
+    <main class="flex flex-col justify-between h-screen">
+      <section class="w-10/12 mx-auto">
+        <nav class="flex justify-between items-center mt-6">
+          <a href="/">
+            <img class="w-24 cursor-pointer" src="assets/img/logo.png" alt="" />
+          </a>
+          <article class="flex flex-col justify-center text-right">
+            <a href="/" id="mainPage" class="text-sm font-medium text-primary cursor-pointer hidden"
+              >Бош сахифа</a
+            >
+            <a href="about.html" class="text-sm font-bold text-primary cursor-pointer"
+              >Биз хақимизда</a
+            >
+          </article>
+        </nav>
+        <main class="mt-16 flex items-center justify-center text-primary">
+          <form class="w-full flex flex-col items-center justify-center" id="form">
+            <article class="flex items-center justify-center pr-2">
+              <img class="w-16" src="assets/img/register_doc.png" alt="" />
+              <p class="text-lg">Рўйхатдан ўтиш</p>
+            </article>
+            <ul class="flex flex-col justify-center gap-5 mt-6">
+              <li class="flex gap-3 justify-end items-center">
+                <label for="firstName">Исм</label>
+                <input
+                  required
+                  class="px-4 py-1 rounded-[28px] w-3/5 bg-colorFoot text-primary"
+                  type="text"
+                  id="firstName"
+                  name="name"
+                />
+              </li>
+              <li class="flex gap-3 justify-end items-center">
+                <label for="lastName">Фамилия</label>
+                <input
+                  required
+                  class="p-4 py-1 rounded-[28px] w-3/5 bg-colorFoot text-primary"
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                />
+              </li>
+              <li class="flex gap-3 justify-end items-center">
+                <label for="phoneNumber">Тел. Рақами</label>
+                <input
+                  required
+                  class="p-4 py-1 rounded-[28px] w-3/5 bg-colorFoot text-primary"
+                  type="number"
+                  id="phoneNumber"
+                  name="phone"
+                />
+              </li>
+            </ul>
+              <input
+                type="submit"
+                class="cursor-pointer mt-8 bg-primary text-white1 rounded-[28px] h-10 w-40"
+                value="Рўйхатдан ўтиш"
+              />
+          </form>
+        </main>
+      </section>
+      <footer class="bg-colorFoot w-full mt-4">
+        <div class="container w-10/12 mx-auto py-3 text-primary flex items-center justify-between">
+          <p class="cursor-pointer">UTAX Ta’lim</p>
+          <article class="w-2/4 text-right">
+            <a
+              href="tel:+998781136323"
+              class="cursor-pointer text-sm"
+              target="blank"
+              rel="noreferrer"
+            >
+              Тел: +998 78 113 63 23
+            </a>
+            <div class="flex justify-end mt-2 gap-5">
+              <a
+                href="https://instagram.com/utaxtalim?igshid=MWZjMTM2ODFkZg=="
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img class="w-5 cursor-pointer" src="assets/img/instagram.png" alt="" />
+              </a>
+              <a href="https://t.me/utaxtalim" target="_blank" rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/telegram.png" alt="" />
+              </a>
+            </div>
+          </article>
+        </div>
+      </footer>
+    </main>
+    <script src="assets/js/register.js"></script>
+  </body>
+</html>

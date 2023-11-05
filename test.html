@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#643488',
+              primary2: '#653e834f',
+              bgPrimary: '#C1AECF66',
+              secondary: '#47019d',
+              white1: '#fff',
+              black1: '#000',
+              colorFoot: '#EAEAEA',
+              gray1: '#cecece',
+              red1: '#DB2929',
+              green1: '#00A907',
+              blue1: '#2D2AD6',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" href="assets/img/logo.png" />
+    <title>Utax</title>
+  </head>
+  <body>
+    <main class="flex flex-col justify-between h-screen">
+      <section class="w-10/12 mx-auto">
+        <nav class="flex justify-between items-center mt-6">
+          <a href="/">
+            <img class="w-24 cursor-pointer" src="assets/img/logo.png" alt="" />
+          </a>
+          <article class="flex flex-col justify-center text-right">
+            <a href="/" id="mainPage" class="text-sm font-medium text-primary cursor-pointer hidden"
+              >Бош сахифа</a
+            >
+            <a href="about.html" class="text-sm font-bold text-primary cursor-pointer"
+              >Биз хақимизда</a
+            >
+          </article>
+        </nav>
+        <!-- ================ -->
+
+        <main>
+          <div id="results" class="fixed inset-0 hidden items-center justify-center z-50">
+            <div class="bg-primary2 w-10/12 p-8 rounded shadow-lg flex flex-col items-center">
+              <h2 class="text-xl font-semibold mb-4 text-center">
+                Тест натижаси <span id="level" class=""></span>
+              </h2>
+              <p id="totalCount1" class="text-left w-full"></p>
+              <p id="correctCount" class="text-left w-full"></p>
+              <p id="incorrectCount" class="text-left w-full"></p>
+              <button class="mt-4 bg-primary text-white font-medium py-2 px-4 rounded-[28px]">
+                <a id="mainPage" href="/">Бош сахифа</a>
+              </button>
+            </div>
+          </div>
+          <div id="endTest" class="fixed hidden items-center justify-center inset-0 z-10">
+            <div class="bg-colorFoot p-8 w-10/12 rounded shadow-lg text-primary">
+              <p class="text-xl font-semibold mb-4 text-center">Тест синовини якунламоқчимисиз?</p>
+              <div class="flex justify-center gap-3">
+                <button id="endTestButton" class="mt-4 bg-primary text-white font-medium py-2 rounded-[28px] px-5">
+                  Ха
+                </button>
+                <button id="resumeButton" class="mt-4 bg-primary text-white font-medium py-2 px-4 rounded-[28px]">
+                  Йук
+                </button>
+              </div>
+            </div>
+          </div>
+          <main id="questions" class="mt-6 text-primary block">
+            <article class="flex justify-between items-center">
+              <p class="font-semibold text-4xl">Тест</p>
+              <div class="flex flex-col justify-center items-end text-lg">
+                <div class="timer flex gap-1">
+                  <p class="text-sm">Time Remaining:</p>
+                  <p class="text-sm" id="timerDisplay">1:40:00</p>
+                </div>
+                <p class="text-sm" id="showRange">1-10/50</p>
+              </div>
+            </article>
+            <section>
+              <div id="container"></div>
+              <article class="mt-6 flex flex-col gap-2 items-center">
+                <div class="pagination-container"></div>
+                <div class="flex gap-5">
+                  <img
+                    class="cursor-pointer bg-gray1 px-5 py-2 rounded-2xl"
+                    src="assets/img/prev.png"
+                    alt=""
+                    id="prevButton"
+                  />
+                  <img
+                    class="cursor-pointer bg-gray1 px-5 py-2 rounded-2xl"
+                    src="assets/img/next.png"
+                    alt=""
+                    id="nextButton"
+                  />
+                </div>
+                <button id="pauseButton" class="bg-gray1 px-5 py-1 rounded-2xl font-semibold">Якунлаш</button>
+              </article>
+            </section>
+          </main>
+        </main>
+
+        <!-- ================ -->
+      </section>
+      <footer class="bg-colorFoot w-full mt-4">
+        <div class="container w-10/12 mx-auto py-3 text-primary flex items-center justify-between">
+          <p class="cursor-pointer">UTAX Ta’lim</p>
+          <article class="w-2/4 text-right">
+            <a
+              href="tel:+998781136323"
+              class="cursor-pointer text-sm"
+              target="blank"
+              rel="noreferrer"
+            >
+              Тел: +998 78 113 63 23
+            </a>
+            <div class="flex justify-end mt-2 gap-5">
+              <a
+                href="https://instagram.com/utaxtalim?igshid=MWZjMTM2ODFkZg=="
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img class="w-5 cursor-pointer" src="assets/img/instagram.png" alt="" />
+              </a>
+              <a href="https://t.me/utaxtalim" target="_blank" rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/telegram.png" alt="" />
+              </a>
+            </div>
+          </article>
+        </div>
+      </footer>
+    </main>
+    <script src="assets/js/test.js"></script>
+  </body>
+</html>

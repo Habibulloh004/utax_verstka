@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#643488',
+              primary2: '#653e834f',
+              bgPrimary: '#C1AECF66',
+              secondary: '#47019d',
+              white1: '#fff',
+              black1: '#000',
+              colorFoot: '#EAEAEA',
+              gray1: '#cecece',
+              red1: '#DB2929',
+              green1: '#00A907',
+              blue1: '#2D2AD6',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" href="assets/img/logo.png" />
+    <title>Utax</title>
+  </head>
+  <body>
+    <main class="flex flex-col justify-between h-screen">
+      <section class="w-10/12 mx-auto">
+        <nav class="flex justify-between items-center mt-6">
+          <a href="/">
+            <img class="w-24 cursor-pointer" src="assets/img/logo.png" alt="" />
+          </a>
+          <article class="flex flex-col justify-center text-right">
+            <a href="/" id="mainPage" class="text-sm font-medium text-primary cursor-pointer hidden">Бош сахифа</a>
+            <a href="about.html" class="text-sm font-bold text-primary cursor-pointer">Биз хақимизда</a>
+          </article>
+        </nav>
+        <div class="container mt-6">
+          <article class="w-full mx-auto">
+            <img src="assets/img/about.png" class="w-full" alt="" />
+          </article>
+          <article class="text-center mt-5 text-primary">
+            <p class="text-2xl font-semibold">Онлайн тест синови</p>
+            <p class="text-sm mt-3 font-medium">
+              Ушбу саҳифа орқали UTAX Ta’lim академияси тест синовини амалга ошириб ўз даражангизни
+              аниқлаб олинг.
+            </p>
+          </article>
+          <a
+            href="/register.html"
+            class="bg-primary text-white1 cursor-pointer flex items-center justify-center mt-4 rounded-[28px] w-10/12 mx-auto py-1 px-3"
+          >
+            <img src="assets/img/test_book.png" class="w-9" alt="" />
+            <p>Тест синовини бошлаш</p>
+          </a>
+        </div>
+      </section>
+      <footer class="bg-colorFoot w-full mt-4">
+        <div class="container w-10/12 mx-auto py-3 text-primary flex items-center justify-between">
+          <p class='cursor-pointer'>UTAX Ta’lim</p>
+          <article class="w-2/4 text-right">
+            <a href="tel:+998781136323" class='cursor-pointer text-sm' target="blank" rel="noreferrer">
+              Тел: +998 78 113 63 23
+            </a>
+            <div class="flex justify-end mt-2 gap-5">
+              <a href='https://instagram.com/utaxtalim?igshid=MWZjMTM2ODFkZg==' target='_blank' rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/instagram.png" alt="" />
+              </a>
+              <a href='https://t.me/utaxtalim' target='_blank' rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/telegram.png" alt="" />
+              </a>
+            </div>
+          </article>
+        </div>
+      </footer>
+    </main>
+    <script src="assets/js/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#643488',
+              primary2: '#653e834f',
+              bgPrimary: '#C1AECF66',
+              secondary: '#47019d',
+              white1: '#fff',
+              black1: '#000',
+              colorFoot: '#EAEAEA',
+              gray1: '#cecece',
+              red1: '#DB2929',
+              green1: '#00A907',
+              blue1: '#2D2AD6',
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="icon" href="assets/img/logo.png" />
+    <title>Utax</title>
+  </head>
+  <body>
+    <main class="flex flex-col justify-between h-screen">
+      <section class="w-10/12 mx-auto">
+        <nav class="flex justify-between items-center mt-6">
+          <a href="/">
+            <img class="w-24 cursor-pointer" src="assets/img/logo.png" alt="" />
+          </a>
+          <article class="flex flex-col justify-center text-right">
+            <a href="/" id="mainPage" class="text-sm font-medium text-primary cursor-pointer hidden">Бош сахифа</a>
+            <a href="about.html" class="text-sm font-bold text-primary cursor-pointer">Биз хақимизда</a>
+          </article>
+        </nav>
+        <main class="container text-primary bg-bgPrimary mt-6 text-sm p-5 rounded-2xl">
+            <p class='text-lg font-semibold text-center'>Қоидалар!</p>
+            <p>
+              1. Сиз бу тестни фақат бир марта топшира оласиз. <br /> 2. Синовда 50 та тест мавжуд.
+              <br /> 3. Ҳар бир тест учун 2 дақиқа вақт берилади. <br /> 4. Тест бошлангандан сонг 100
+              дақиқа ичида жавобларни белгилаб юбориш тугмасини босинг. <br /> 5. 100 дақиқадан сонг
+              белгиланган жавоблар тасдиқланиб натижаси корсатилади. <br /><br /> Тавсия!<span class='block mt-4 font-bold'>
+              Тестни бошлашдан аввал
+              қулайроқ жойлашиб 100 дақиқа чалғимай тестларни ишланг.</span>
+            </p>
+            <a href='/test.html' class='w-full flex justify-center'>
+              <button
+                class="cursor-pointer mt-8 bg-primary text-white1 p-2 rounded-[28px] w-2/3">
+                Тасдиклаш
+              </button>
+            </a>
+          </main>
+      </section>
+      <footer class="bg-colorFoot w-full mt-4">
+        <div class="container w-10/12 mx-auto py-3 text-primary flex items-center justify-between">
+          <p class='cursor-pointer'>UTAX Ta’lim</p>
+          <article class="w-2/4 text-right">
+            <a href="tel:+998781136323" class='cursor-pointer text-sm' target="blank" rel="noreferrer">
+              Тел: +998 78 113 63 23
+            </a>
+            <div class="flex justify-end mt-2 gap-5">
+              <a href='https://instagram.com/utaxtalim?igshid=MWZjMTM2ODFkZg==' target='_blank' rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/instagram.png" alt="" />
+              </a>
+              <a href='https://t.me/utaxtalim' target='_blank' rel="noreferrer">
+                <img class="w-5 cursor-pointer" src="assets/img/telegram.png" alt="" />
+              </a>
+            </div>
+          </article>
+        </div>
+      </footer>
+    </main>
+    <script src="assets/js/index.js"></script>
+  </body>
+</html>
