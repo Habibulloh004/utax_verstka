@@ -1,0 +1,19 @@
+        const question = finalQuestions[i];
+
+        const article = document.createElement("article");
+        article.classList.add(
+          "mt-5",
+          "bg-gray1",
+          "rounded-2xl",
+          "py-6",
+          "px-4"
+        );
+
+        const questionText = document.createElement("p");
+        questionText.textContent = `${i + 1}. ${question.question}`;
+
+        const form = document.createElement("form");
+        form.classList.add("form_radio", "w-11/12", "mx-auto", "mt-4");
+
+        const optionsList = document.createElement("ul");
+        optionsList.classList.add("flex", "flex-col", "gap-2");
