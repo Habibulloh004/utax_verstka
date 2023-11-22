@@ -102,7 +102,6 @@ fetch(api)
     // ... (Previous code)
 
     endTestButton.addEventListener("click", () => {
-      const selectedAnswers = [];
       let correctCount = 0; // Initialize correctCount here
 
       const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
@@ -110,16 +109,16 @@ fetch(api)
       // Output details of user answers and correct answers to the console
       userAnswers.forEach((userAnswer) => {
         const questionIndex = userAnswer.question - 1;
-        const correctOption = finalQuestions[questionIndex].correct_option.trim();
+        const correctOption =
+          finalQuestions[questionIndex].correct_option.trim();
         const userSelectedAnswer = userAnswer.userAnswer;
-
 
         // Compare user's answer with correct answer and increment correctCount if they match
         if (userSelectedAnswer === correctOption) {
           correctCount++;
-          totalCount+=2;
+          totalCount += 2;
           incorrectCount--;
-        } 
+        }
       });
 
       // Calculate total count and display results
@@ -203,40 +202,23 @@ fetch(api)
     }
 
     function countTest() {
-      const selectedAnswers = [];
+      const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
 
-      finalQuestions.forEach((question, index) => {
-        const selectedOption = document.querySelector(
-          `input[name=question-${index + 1}]:checked`
-        );
+      // Output details of user answers and correct answers to the console
+      userAnswers.forEach((userAnswer) => {
+        const questionIndex = userAnswer.question - 1;
+        const correctOption =
+          finalQuestions[questionIndex].correct_option.trim();
+        const userSelectedAnswer = userAnswer.userAnswer;
 
-        if (selectedOption) {
-          selectedAnswers.push({
-            question: index + 1,
-            userAnswer: selectedOption.parentElement
-              .querySelector("label")
-              .textContent.trim(),
-            correctAnswer: question.correct_option.trim(),
-          });
-        } else {
-          selectedAnswers.push({
-            question: index + 1,
-            userAnswer: null,
-            correctAnswer: question.correct_option.trim(),
-          });
-        }
-      });
-
-      selectedAnswers.forEach((answer) => {
-        if (answer.userAnswer === answer.correctAnswer) {
+        // Compare user's answer with correct answer and increment correctCount if they match
+        if (userSelectedAnswer === correctOption) {
           correctCount++;
           totalCount += 2;
-        } else if (answer.userAnswer !== null) {
-          incorrectCount++;
-        } else {
-          incorrectCount++;
+          incorrectCount--;
         }
       });
+
       document.getElementById("endTest").classList.add("hidden");
       document.getElementById("endTest").classList.remove("flex");
       document.getElementById("results").classList.add("flex");
@@ -453,11 +435,26 @@ fetch(api)
     }
     const totalPages = Math.ceil(finalQuestions.length / questionsPerPage);
     // Function to render pagination numbers
-    function renderPaginationNumbers() {
-      const paginationList = document.createElement("ul");
-      paginationList.classList.add("flex", "gap-3");
 
-      let bold = 1; // Set bold to 1 initially
+    let paginationList; // Declare paginationList outside the function
+    let listItems = []; // Array to store references to list items
+
+    function updatePaginationStyles(totalPages) {
+      for (let i = 0; i < totalPages; i++) {
+        const listItem = listItems[i];
+        if (currentPage === i + 1) {
+          listItem.classList.remove("font-normal");
+          listItem.classList.add("font-bold");
+        } else {
+          listItem.classList.remove("font-bold");
+          listItem.classList.add("font-normal");
+        }
+      }
+    }
+
+    function renderPaginationNumbers() {
+      paginationList = document.createElement("ul");
+      paginationList.classList.add("flex", "gap-3");
 
       for (let i = 0; i < totalPages; i++) {
         const listItem = document.createElement("li");
@@ -465,7 +462,7 @@ fetch(api)
         listItem.textContent = i + 1;
 
         if (i === 0) {
-          listItem.classList.add("font-bold"); // Set first element as bold initially
+          listItem.classList.add("font-bold"); // Set the first element as bold initially
         } else {
           listItem.classList.add("font-normal");
         }
@@ -475,35 +472,19 @@ fetch(api)
           window.scrollTo(0, 0);
           renderQuestionsForPage(currentPage);
 
-          bold = i + 1; // Update bold here
-          updatePaginationStyles(); // Update styles after click
+          updatePaginationStyles(totalPages); // Update styles after click
         });
 
+        listItems.push(listItem); // Store reference to the list item
         paginationList.appendChild(listItem);
-      }
-
-      // Function to update styles
-      function updatePaginationStyles() {
-        for (let i = 0; i < totalPages; i++) {
-          const listItem = paginationList.children[i];
-          if (bold === i + 1) {
-            listItem.classList.remove("font-normal");
-            listItem.classList.add("font-bold");
-          } else {
-            listItem.classList.remove("font-bold");
-            listItem.classList.add("font-normal");
-          }
-        }
       }
 
       return paginationList;
     }
 
-    // Add pagination numbers before the previous and next buttons
-    const paginationContainer = document.querySelector(".pagination-container");
-    paginationContainer.appendChild(renderPaginationNumbers());
-
     function handlePagination(direction) {
+      const totalPages = listItems.length;
+
       if (direction === "prev" && currentPage > 1) {
         currentPage--;
       } else if (
@@ -512,9 +493,14 @@ fetch(api)
       ) {
         currentPage++;
       }
+
       window.scrollTo(0, 0);
       renderQuestionsForPage(currentPage);
+      updatePaginationStyles(totalPages); // Update styles for page numbers
     }
+
+    const paginationContainer = document.querySelector(".pagination-container");
+    paginationContainer.appendChild(renderPaginationNumbers());
 
     const prevButton = document.getElementById("prevButton");
     const nextButton = document.getElementById("nextButton");
