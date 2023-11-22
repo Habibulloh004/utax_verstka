@@ -2,7 +2,7 @@ const api = "https://utax-777597cb6d80.herokuapp.com/get_questions";
 let finalQuestions;
 const container = document.getElementById("container");
 let correctCount = 0;
-let incorrectCount = 0;
+let incorrectCount = 50;
 let totalCount = 0;
 
 fetch(api)
@@ -99,114 +99,42 @@ fetch(api)
       container.appendChild(article);
     });
 
-    // ... (Your existing code)
-
-    // Function to save user answers in session storage
-    // ... (Your existing code)
-    container.addEventListener("click", (event) => {
-      if (event.target.type === "radio") {
-        saveUserAnswers();
-      }
-    });
-
-    // Function to save user answers in session storage
-    function saveUserAnswers() {
-      const userAnswers = [];
-
-      finalQuestions.forEach((question, index) => {
-        const selectedOption = document.querySelector(
-          `input[name=question-${index + 1}]:checked`
-        );
-
-        if (selectedOption) {
-          userAnswers.push({
-            question: index + 1,
-            userAnswer: selectedOption.parentElement
-              .querySelector("label")
-              .textContent.trim(),
-          });
-        } else {
-          userAnswers.push({
-            question: index + 1,
-            userAnswer: null,
-          });
-        }
-      });
-
-      sessionStorage.setItem("userAnswers", JSON.stringify(userAnswers));
-    }
-
-    // Function to load user answers from session storage and mark selected options
     // ... (Previous code)
-
-    // Function to load user answers from localStorage and mark selected options
-    function loadUserAnswers() {
-      const savedUserAnswers =
-        JSON.parse(localStorage.getItem("userAnswers")) || [];
-
-      savedUserAnswers.forEach((userAnswer) => {
-        const questionIndex = userAnswer.question - 1;
-        const optionIndex = finalQuestions[questionIndex].options.findIndex(
-          (option) => option === userAnswer.userAnswer
-        );
-
-        if (optionIndex !== -1) {
-          const input = document.querySelector(
-            `input[name=question-${userAnswer.question}]:nth-child(${
-              optionIndex + 1
-            })`
-          );
-          if (input) {
-            input.checked = true;
-          }
-        }
-      });
-    }
-
-    // ... (Remaining code)
-
-    // Call loadUserAnswers before rendering questions to load previously saved answers
-    loadUserAnswers();
 
     endTestButton.addEventListener("click", () => {
       const selectedAnswers = [];
+      let correctCount = 0; // Initialize correctCount here
 
-      finalQuestions.forEach((question, index) => {
-        const selectedOption = document.querySelector(
-          `input[name=question-${index + 1}]:checked`
-        );
+      const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
 
-        if (selectedOption) {
-          selectedAnswers.push({
-            question: index + 1,
-            userAnswer: selectedOption.parentElement
-              .querySelector("label")
-              .textContent.trim(),
-            correctAnswer: question.correct_option.trim(),
-          });
-        } else {
-          selectedAnswers.push({
-            question: index + 1,
-            userAnswer: null,
-            correctAnswer: question.correct_option.trim(),
-          });
-        }
-      });
+      // Output details of user answers and correct answers to the console
+      userAnswers.forEach((userAnswer) => {
+        const questionIndex = userAnswer.question - 1;
+        const correctOption = finalQuestions[questionIndex].correct_option.trim();
+        const userSelectedAnswer = userAnswer.userAnswer;
 
-      selectedAnswers.forEach((answer) => {
-        if (answer.userAnswer === answer.correctAnswer) {
+
+        // Compare user's answer with correct answer and increment correctCount if they match
+        if (userSelectedAnswer === correctOption) {
           correctCount++;
-          totalCount += 2;
-        } else if (answer.userAnswer !== null) {
-          incorrectCount++;
-        } else {
-          incorrectCount++;
-        }
+          totalCount+=2;
+          incorrectCount--;
+        } 
       });
+
+      // Calculate total count and display results
+      // totalCount = userAnswers.length; // Assuming 1 point per correct answer
+
+      console.log("Number of correct answers:", correctCount);
+      console.log("Total Count:", totalCount);
+
       document.getElementById("endTest").classList.add("hidden");
       document.getElementById("endTest").classList.remove("flex");
-      document.getElementById("level").textContent = comparison;
-      document.getElementById("level").classList.add(color);
+      document.getElementById("level").textContent =
+        getComparisonLevel(totalCount);
+      document
+        .getElementById("level")
+        .classList.add(getComparisonColor(totalCount));
       document.getElementById("totalCount1").textContent =
         "Умумий тўпланган балл: " + totalCount;
       document.getElementById("correctCount").textContent =
@@ -250,20 +178,41 @@ fetch(api)
         });
     });
 
+    // ... (Remaining code)
+
+    // Helper function to determine the comparison level based on the total score
+    function getComparisonLevel(totalScore) {
+      if (totalScore < 50) {
+        return "Қониқарсиз";
+      } else if (totalScore <= 80) {
+        return "Қониқарли";
+      } else {
+        return "Мукаммал";
+      }
+    }
+
+    // Helper function to determine the color class based on the total score
+    function getComparisonColor(totalScore) {
+      if (totalScore < 50) {
+        return "text-red-500";
+      } else if (totalScore <= 80) {
+        return "text-blue-500";
+      } else {
+        return "text-green-500";
+      }
+    }
+
     function countTest() {
       const selectedAnswers = [];
-      const last10Questions = finalQuestions.slice(-10); // Get the last 10 questions
 
-      last10Questions.forEach((question, index) => {
+      finalQuestions.forEach((question, index) => {
         const selectedOption = document.querySelector(
-          `input[name=question-${
-            finalQuestions.length - 10 + index + 1
-          }]:checked`
+          `input[name=question-${index + 1}]:checked`
         );
 
         if (selectedOption) {
           selectedAnswers.push({
-            question: finalQuestions.length - 10 + index + 1,
+            question: index + 1,
             userAnswer: selectedOption.parentElement
               .querySelector("label")
               .textContent.trim(),
@@ -271,47 +220,103 @@ fetch(api)
           });
         } else {
           selectedAnswers.push({
-            question: finalQuestions.length - 10 + index + 1,
+            question: index + 1,
             userAnswer: null,
             correctAnswer: question.correct_option.trim(),
           });
         }
       });
 
-      // Count only the correct answers in the last 10 questions
-      const correctCountLast10 = selectedAnswers.reduce((count, answer) => {
-        return count + (answer.userAnswer === answer.correctAnswer ? 1 : 0);
-      }, 0);
+      selectedAnswers.forEach((answer) => {
+        if (answer.userAnswer === answer.correctAnswer) {
+          correctCount++;
+          totalCount += 2;
+        } else if (answer.userAnswer !== null) {
+          incorrectCount++;
+        } else {
+          incorrectCount++;
+        }
+      });
+      document.getElementById("endTest").classList.add("hidden");
+      document.getElementById("endTest").classList.remove("flex");
+      document.getElementById("results").classList.add("flex");
+      document.getElementById("results").classList.remove("hidden");
 
-      console.log(
-        `Total Correct Answers in Last 10 Questions: ${correctCountLast10}`
-      );
+      console.log(`Total Count: ${totalCount}`);
+      console.log(`Total Correct Answers: ${correctCount}`);
+      console.log(`Total Incorrect Answers: ${incorrectCount}`);
     }
 
-    // ... (Your existing code)
+    const questionsPerPage = 10;
+    let currentPage = 1;
+    //---------1.qishidim
+    container.addEventListener("click", (event) => {
+      if (event.target.type === "radio") {
+        saveUserAnswers();
+      }
+    });
 
-    // const questionsPerPage = 10;
-    // let currentPage = 1;
+    // Function to save user answers in session storage
+    function saveUserAnswers() {
+      const userAnswers = [];
 
-    // const showRange = document.getElementById("showRange");
+      finalQuestions.forEach((question, index) => {
+        const selectedOption = document.querySelector(
+          `input[name=question-${index + 1}]:checked`
+        );
+
+        if (selectedOption) {
+          userAnswers.push({
+            question: index + 1,
+            userAnswer: selectedOption.parentElement
+              .querySelector("label")
+              .textContent.trim(),
+          });
+        } else {
+          userAnswers.push({
+            question: index + 1,
+            userAnswer: null,
+          });
+        }
+      });
+
+      sessionStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    }
+    function loadUserAnswers() {
+      const savedUserAnswers =
+        JSON.parse(localStorage.getItem("userAnswers")) || [];
+
+      savedUserAnswers.forEach((userAnswer) => {
+        const questionIndex = userAnswer.question - 1;
+        const optionIndex = finalQuestions[questionIndex].options.findIndex(
+          (option) => option === userAnswer.userAnswer
+        );
+
+        if (optionIndex !== -1) {
+          const input = document.querySelector(
+            `input[name=question-${userAnswer.question}]:nth-child(${
+              optionIndex + 1
+            })`
+          );
+          if (input) {
+            input.checked = true;
+          }
+        }
+      });
+    }
+
+    // Call loadUserAnswers before rendering questions to load previously saved answers
+    loadUserAnswers();
+
+    //-----------1.qoshdim tugadi
 
     document
       .getElementById("mainPage")
       .addEventListener("click", sessionStorage.removeItem("hello"));
 
-    const questionsPerPage = 10;
-    let currentPage = 1;
-
     const showRange = document.getElementById("showRange");
 
-    // ... (Previous code)
-
-    // Function to save user answers in localStorage
-    // ... (Previous code)
-
-    // Function to save user answers in localStorage
-    // ... (Previous code)
-
+    //------------2.qoshdim
     // Function to save user answers in localStorage
     function saveUserAnswers() {
       const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
@@ -350,11 +355,6 @@ fetch(api)
       localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
     }
 
-    // ... (Remaining code)
-
-    // Function to load user answers from localStorage and mark selected options
-
-    // Function to get the indices of currently visible questions
     function getVisibleQuestions() {
       const startIndex = (currentPage - 1) * questionsPerPage;
       const endIndex = startIndex + questionsPerPage;
@@ -367,10 +367,7 @@ fetch(api)
       return visibleQuestions;
     }
 
-    // Call loadUserAnswers before rendering questions to load previously saved answers
     loadUserAnswers();
-
-    // ... (Remaining code)
 
     // Event listener to save user answers when a radio button is clicked
     container.addEventListener("click", (event) => {
@@ -379,13 +376,8 @@ fetch(api)
       }
     });
 
-    // ... (Remaining code)
+    //-------------2.qoshdim tugadi----------------------------
 
-    // ... (Remaining code)
-
-    // ... (Previous code)
-
-    // Function to render questions for the current page
     function renderQuestionsForPage(pageNumber) {
       const startIndex = (pageNumber - 1) * questionsPerPage;
       const endIndex = startIndex + questionsPerPage;
@@ -395,8 +387,7 @@ fetch(api)
       showRange.textContent = questionRange;
 
       container.innerHTML = "";
-      const visibleQuestions = getVisibleQuestions(); // Get currently visible questions
-
+      const visibleQuestions = getVisibleQuestions();
       visibleQuestions.forEach((questionIndex) => {
         const question = finalQuestions[questionIndex];
 
@@ -458,16 +449,15 @@ fetch(api)
         container.appendChild(article);
       });
 
-      loadUserAnswers(); // Load correct answers after rendering questions
+      loadUserAnswers();
     }
-
-    // ... (Remaining code)
-
     const totalPages = Math.ceil(finalQuestions.length / questionsPerPage);
-
+    // Function to render pagination numbers
     function renderPaginationNumbers() {
       const paginationList = document.createElement("ul");
       paginationList.classList.add("flex", "gap-3");
+
+      let bold = 1; // Set bold to 1 initially
 
       for (let i = 0; i < totalPages; i++) {
         const listItem = document.createElement("li");
@@ -475,7 +465,7 @@ fetch(api)
         listItem.textContent = i + 1;
 
         if (i === 0) {
-          listItem.classList.add("font-bold");
+          listItem.classList.add("font-bold"); // Set first element as bold initially
         } else {
           listItem.classList.add("font-normal");
         }
@@ -484,16 +474,19 @@ fetch(api)
           currentPage = i + 1;
           window.scrollTo(0, 0);
           renderQuestionsForPage(currentPage);
-          updatePaginationStyles();
+
+          bold = i + 1; // Update bold here
+          updatePaginationStyles(); // Update styles after click
         });
 
         paginationList.appendChild(listItem);
       }
 
+      // Function to update styles
       function updatePaginationStyles() {
         for (let i = 0; i < totalPages; i++) {
           const listItem = paginationList.children[i];
-          if (currentPage === i + 1) {
+          if (bold === i + 1) {
             listItem.classList.remove("font-normal");
             listItem.classList.add("font-bold");
           } else {
@@ -506,6 +499,7 @@ fetch(api)
       return paginationList;
     }
 
+    // Add pagination numbers before the previous and next buttons
     const paginationContainer = document.querySelector(".pagination-container");
     paginationContainer.appendChild(renderPaginationNumbers());
 
@@ -520,7 +514,6 @@ fetch(api)
       }
       window.scrollTo(0, 0);
       renderQuestionsForPage(currentPage);
-      updatePaginationStyles();
     }
 
     const prevButton = document.getElementById("prevButton");
@@ -528,61 +521,54 @@ fetch(api)
 
     prevButton.addEventListener("click", () => handlePagination("prev"));
     nextButton.addEventListener("click", () => handlePagination("next"));
-
+    //----------------3.qoshdim
     // Function to render the remaining questions as hidden
-    function renderRemainingQuestionsHidden() {
-      for (let i = questionsPerPage; i < finalQuestions.length; i++) {
-        const question = finalQuestions[i];
-        const article = document.createElement("article");
-        article.classList.add("hidden"); // Set as hidden
+    // function renderRemainingQuestionsHidden() {
+    //   for (let i = questionsPerPage; i < finalQuestions.length; i++) {
+    //     const question = finalQuestions[i];
+    //     const article = document.createElement("article");
+    //     article.classList.add("hidden"); // Set as hidden
 
-        const questionText = document.createElement("p");
-        questionText.textContent = `${i + 1}. ${question.question}`;
+    //     const questionText = document.createElement("p");
+    //     questionText.textContent = `${i + 1}. ${question.question}`;
 
-        const form = document.createElement("form");
-        form.classList.add("form_radio", "w-11/12", "mx-auto", "mt-4");
-        const optionsList = document.createElement("ul");
-        optionsList.classList.add("flex", "flex-col", "gap-2");
+    //     const form = document.createElement("form");
+    //     form.classList.add("form_radio", "w-11/12", "mx-auto", "mt-4");
+    //     const optionsList = document.createElement("ul");
+    //     optionsList.classList.add("flex", "flex-col", "gap-2");
 
-        question.options.forEach((option, optionIndex) => {
-          const listItem = document.createElement("li");
-          listItem.classList.add("flex", "gap-2", "items-center", "w-full");
+    //     question.options.forEach((option, optionIndex) => {
+    //       const listItem = document.createElement("li");
+    //       listItem.classList.add("flex", "gap-2", "items-center", "w-full");
 
-          const input = document.createElement("input");
-          input.classList.add("accent-primary", "w-[10%]");
-          input.type = "radio";
-          input.name = `question-${i + 1}`;
+    //       const input = document.createElement("input");
+    //       input.classList.add("accent-primary", "w-[10%]");
+    //       input.type = "radio";
+    //       input.name = `question-${i + 1}`;
 
-          const label = document.createElement("label");
-          label.classList.add("cursor-pointer", "w-[80%]", "text-left");
-          label.textContent = option;
+    //       const label = document.createElement("label");
+    //       label.classList.add("cursor-pointer", "w-[80%]", "text-left");
+    //       label.textContent = option;
 
-          listItem.appendChild(input);
-          listItem.appendChild(label);
-          optionsList.appendChild(listItem);
-        });
+    //       listItem.appendChild(input);
+    //       listItem.appendChild(label);
+    //       optionsList.appendChild(listItem);
+    //     });
 
-        form.appendChild(optionsList);
-        article.appendChild(questionText);
-        article.appendChild(form);
-        container.appendChild(article);
-      }
-    }
+    //     form.appendChild(optionsList);
+    //     article.appendChild(questionText);
+    //     article.appendChild(form);
+    //     container.appendChild(article);
+    //   }
+    // }
+    // //-------------------------3.qoshdim tugadi
 
-    // Initially, render only the first page
+    // // Initial render for the first page
+    // //---------------4.qoshdim
+    // renderRemainingQuestionsHidden();
+    // updatePaginationStyles();
+
     renderQuestionsForPage(currentPage);
-    renderRemainingQuestionsHidden();
-    updatePaginationStyles(); // Update styles based on the initial page
-
-    // const prevButton = document.getElementById("prevButton");
-    // const nextButton = document.getElementById("nextButton");
-
-    prevButton.addEventListener("click", () => handlePagination("prev"));
-    nextButton.addEventListener("click", () => handlePagination("next"));
-
-    // ... (Your existing code)
-
-    // Function to save user answers in session storage
 
     let timerInterval;
     let timerPaused = false;
@@ -677,7 +663,7 @@ fetch(api)
     document
       .getElementById("pauseButton")
       .addEventListener("click", function () {
-        pauseTimer();
+        pauseTimer;
         document.getElementById("endTest").classList.add("flex");
         document.getElementById("endTest").classList.remove("hidden");
         document.getElementById("questions").classList.add("hidden");
@@ -690,7 +676,6 @@ fetch(api)
         document.getElementById("endTest").classList.remove("flex");
         document.getElementById("questions").classList.add("block");
         document.getElementById("questions").classList.remove("hidden");
-        resumeTimer();
+        resumeTimer;
       });
   });
-// ... (Rest of your code)
