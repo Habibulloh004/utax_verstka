@@ -600,6 +600,7 @@ fetch(api)
             document.getElementById("results").classList.remove("hidden");
             document.getElementById("questions").classList.add("hidden");
             document.getElementById("questions").classList.remove("block");
+            // https://users-utax-ed72e6eed9e7.herokuapp.com/request
             const localData = JSON.parse(localStorage.getItem("user"));
             const newData = {
               ...localData,

@@ -5,8 +5,8 @@ const pNumber = document.getElementById('phoneNumber');
 
 const user = {
     name: '',
-    phone: '',
     comment: '',
+    phone: '',
 }
 
 form.addEventListener('submit', (e) => {
