@@ -152,7 +152,7 @@ fetch(api)
           "correctAnswer" + correctCount + " " + "totalScore" + totalCount
         ),
       };
-      const url = "https://utax-method-1fe234057bee.herokuapp.com/request";
+      const url = "https://users-utax-ed72e6eed9e7.herokuapp.com/request";
       const bodyFormData = new FormData();
       bodyFormData.append("name", newData.name);
       bodyFormData.append("comment", newData.comment);
@@ -609,7 +609,7 @@ fetch(api)
               ),
             };
             const url =
-              "https://utax-method-1fe234057bee.herokuapp.com/request";
+              "https://users-utax-ed72e6eed9e7.herokuapp.com/request";
             const bodyFormData = new FormData();
             bodyFormData.append("name", newData.name);
             bodyFormData.append("comment", newData.comment);
